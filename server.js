@@ -2,6 +2,11 @@
 import Hapi from '@hapi/hapi';
 import routes from './routes/index.js';
 import Inert from '@hapi/inert';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const init = async () => {
   const server = Hapi.server({
@@ -16,12 +21,34 @@ const init = async () => {
 
   await server.register(Inert);
 
+  // Route home untuk info API
+  server.route({
+    method: 'GET',
+    path: '/',
+    handler: (request, h) => {
+      return h.response({
+        message: 'Kasir App API',
+        version: '1.0.0',
+        endpoints: {
+          categories: '/categories',
+          products: '/products',
+          keranjangs: '/keranjangs',
+          pesanans: '/pesanans'
+        }
+      }).code(200);
+    }
+  });
 
-  // daftarkan semua route dari routes/index.js
+  // Daftarkan semua route dari routes/index.js
   server.route(routes);
 
   await server.start();
   console.log('🚀 Server berjalan pada:', server.info.uri);
 };
+
+process.on('unhandledRejection', (err) => {
+  console.log(err);
+  process.exit(1);
+});
 
 init();

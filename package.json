@@ -16,7 +16,8 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/hapi": "^21.4.3",
-    "@hapi/inert": "^7.1.0"
+    "@hapi/inert": "^7.1.0",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
